@@ -50,7 +50,7 @@ fun MainScreen(
                     .padding(innerPadding)
             )
 
-            is MainUiState.Todos -> {
+            is MainUiState.Products -> {
                 // TODO
             }
         }

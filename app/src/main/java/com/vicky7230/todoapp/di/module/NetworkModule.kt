@@ -2,6 +2,7 @@ package com.vicky7230.todoapp.di.module
 
 import com.vicky7230.todoapp.BuildConfig
 import com.vicky7230.todoapp.data.remote.ApiService
+import com.vicky7230.todoapp.utils.Constants
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.json.Json
@@ -16,8 +17,8 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
-    @Provides
     @Singleton
+    @Provides
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         return if (BuildConfig.DEBUG)
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -25,8 +26,8 @@ class NetworkModule {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
     }
 
-    @Provides
     @Singleton
+    @Provides
     fun provideOkhttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
@@ -36,28 +37,28 @@ class NetworkModule {
             .build()
     }
 
-    @Provides
     @Singleton
+    @Provides
     fun provideJson(): Json {
         return Json { ignoreUnknownKeys = true }
     }
 
-    @Provides
     @Singleton
+    @Provides
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
         json: Json
     ): Retrofit {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(json.asConverterFactory(contentType))
             .client(okHttpClient)
             .build()
     }
 
-    @Provides
     @Singleton
+    @Provides
     internal fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }

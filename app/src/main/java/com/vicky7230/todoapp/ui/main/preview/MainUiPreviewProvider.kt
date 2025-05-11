@@ -8,6 +8,6 @@ class MainUiPreviewProvider: PreviewParameterProvider<MainUiState> {
         MainUiState.Idle,
         MainUiState.Loading,
         MainUiState.Error(message = "something went wrong"),
-        MainUiState.Todos(emptyList())
+        MainUiState.Products(emptyList())
     )
 }

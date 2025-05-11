@@ -1,9 +1,11 @@
 package com.vicky7230.todoapp.di.component
 
+import android.content.Context
 import com.vicky7230.todoapp.TodoApp
 import com.vicky7230.todoapp.di.module.ActivityBindingModule
-import com.vicky7230.todoapp.di.module.ApplicationBindsModule
-import com.vicky7230.todoapp.di.module.ApplicationProvidesModule
+import com.vicky7230.todoapp.di.module.BindingModule
+import com.vicky7230.todoapp.di.module.ApplicationModule
+import com.vicky7230.todoapp.di.module.DatabaseModule
 import com.vicky7230.todoapp.di.module.NetworkModule
 import com.vicky7230.todoapp.di.module.ViewModelModule
 import dagger.BindsInstance
@@ -16,20 +18,18 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         NetworkModule::class,
-        ApplicationBindsModule::class,
-        ApplicationProvidesModule::class,
+        DatabaseModule::class,
+        BindingModule::class,
+        ApplicationModule::class,
         ActivityBindingModule::class,
         ViewModelModule::class
     ]
 )
 interface ApplicationComponent {
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        fun application(todoApp: TodoApp): Builder
-
-        fun build(): ApplicationComponent
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance context: Context): ApplicationComponent
     }
 
     fun inject(todoApp: TodoApp)

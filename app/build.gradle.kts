@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
-    //id("com.google.devtools.ksp")
+    id("com.google.devtools.ksp")
     //id("com.google.dagger.hilt.android")
     kotlin("plugin.serialization") version "2.0.21" // match the Kotlin version
 }
@@ -42,6 +42,9 @@ android {
         compose = true
         buildConfig = true
     }
+}
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {
@@ -85,6 +88,13 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
 
     //coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+
+    //room
+    val room_version = "2.7.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
 
 }

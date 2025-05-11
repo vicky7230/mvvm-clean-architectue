@@ -1,9 +1,10 @@
 package com.vicky7230.todoapp.data.remote
 
-import com.vicky7230.todoapp.domain.model.TodoDto
+import com.vicky7230.todoapp.domain.model.Product
+import retrofit2.Response
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("todos")
-    suspend fun getTodos():List<TodoDto>
+    @GET("products")
+    suspend fun getProducts(): Response<List<Product>>
 }

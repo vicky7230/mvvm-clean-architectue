@@ -1,7 +1,9 @@
 package com.vicky7230.todoapp
 
 import android.app.Application
+import com.vicky7230.todoapp.di.component.ApplicationComponent
 import com.vicky7230.todoapp.di.component.DaggerApplicationComponent
+import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -10,6 +12,8 @@ import javax.inject.Inject
 
 class TodoApp : Application(), HasAndroidInjector {
 
+    lateinit var applicationComponent: ApplicationComponent
+
     override fun onCreate() {
         super.onCreate()
 
@@ -17,11 +21,11 @@ class TodoApp : Application(), HasAndroidInjector {
             Timber.plant(Timber.DebugTree())
         }
 
-        DaggerApplicationComponent
-            .builder()
-            .application(this)
-            .build()
-            .inject(this)
+        applicationComponent = DaggerApplicationComponent
+            .factory()
+            .create(this)
+
+        applicationComponent.inject(this)
     }
 
     @Inject
