@@ -40,12 +40,13 @@ import com.vicky7230.todoapp.ui.theme.TodoAppTheme
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    state: MainUiState
+    state: MainUiState,
+    onSearchClick: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            AppToolBar(title = "Home")
+            AppToolBar(title = "Home", onSearchClick = onSearchClick)
         }
     ) { innerPadding ->
         when (state) {
@@ -153,7 +154,8 @@ fun MainScreenPreview(@PreviewParameter(MainUiPreviewProvider::class) state: Mai
     TodoAppTheme {
         MainScreen(
             state = state,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            onSearchClick = {}
         )
     }
 }

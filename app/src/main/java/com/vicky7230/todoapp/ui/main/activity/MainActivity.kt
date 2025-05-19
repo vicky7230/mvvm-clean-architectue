@@ -1,5 +1,6 @@
 package com.vicky7230.todoapp.ui.main.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -38,7 +39,10 @@ class MainActivity : ComponentActivity() {
             TodoAppTheme {
                 MainScreen(
                     modifier = Modifier.fillMaxSize(),
-                    state = state.value
+                    state = state.value,
+                    onSearchClick = {
+                        startActivity(Intent(this@MainActivity, SearchActivity::class.java))
+                    }
                 )
             }
         }
@@ -46,11 +50,14 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.sideEffect.collectLatest { event ->
-                    when(event) {
+                    when (event) {
                         is MainSideEffect.ShowError ->
-                            Toast.makeText(this@MainActivity, event.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, event.message, Toast.LENGTH_SHORT)
+                                .show()
+
                         is MainSideEffect.ShowMessage ->
-                            Toast.makeText(this@MainActivity, event.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, event.message, Toast.LENGTH_SHORT)
+                                .show()
                     }
                 }
             }
