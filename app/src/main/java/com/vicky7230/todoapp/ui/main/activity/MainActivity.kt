@@ -15,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.vicky7230.todoapp.ui.main.screen.MainScreen
 import com.vicky7230.todoapp.ui.main.state.MainSideEffect
 import com.vicky7230.todoapp.ui.main.viewmodel.MainViewModel
+import com.vicky7230.todoapp.ui.search.activity.SearchActivity
 import com.vicky7230.todoapp.ui.theme.TodoAppTheme
 import dagger.android.AndroidInjection
 import kotlinx.coroutines.flow.collectLatest

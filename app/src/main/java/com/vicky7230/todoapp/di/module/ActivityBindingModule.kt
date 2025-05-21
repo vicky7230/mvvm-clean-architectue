@@ -1,7 +1,7 @@
 package com.vicky7230.todoapp.di.module
 
 import com.vicky7230.todoapp.ui.main.activity.MainActivity
-import com.vicky7230.todoapp.ui.main.activity.SearchActivity
+import com.vicky7230.todoapp.ui.search.activity.SearchActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
