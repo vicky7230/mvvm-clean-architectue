@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "380206798751",
+    "project_id": "interviewprep-bc996",
+    "storage_bucket": "interviewprep-bc996.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380206798751:android:058a85dd0a739f90664faa",
+        "android_client_info": {
+          "package_name": "com.vicky7230.todoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC-Z1-IkgR2DLgc7RPsgkUmrFGBMKAGnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

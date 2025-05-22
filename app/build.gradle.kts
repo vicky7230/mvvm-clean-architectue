@@ -6,6 +6,7 @@ plugins {
     id("com.google.devtools.ksp")
     //id("com.google.dagger.hilt.android")
     kotlin("plugin.serialization") version "2.0.21" // match the Kotlin version
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -104,4 +105,8 @@ dependencies {
     //coil
     implementation("io.coil-kt.coil3:coil-compose:3.2.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation("com.google.firebase:firebase-messaging")
 }
