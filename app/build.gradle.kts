@@ -119,4 +119,11 @@ dependencies {
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-messaging")
+
+    //mockk
+    val mockkVersion = "1.14.2"
+    testImplementation("io.mockk:mockk-android:${mockkVersion}")
+    testImplementation("io.mockk:mockk-agent:${mockkVersion}")
+    androidTestImplementation("io.mockk:mockk-android:${mockkVersion}")
+    androidTestImplementation("io.mockk:mockk-agent:${mockkVersion}")
 }
