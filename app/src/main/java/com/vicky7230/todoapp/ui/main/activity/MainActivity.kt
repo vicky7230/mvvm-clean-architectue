@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import com.vicky7230.todoapp.ui.contentprovider.ContentProviderActivity
 import com.vicky7230.todoapp.ui.main.screen.MainScreen
 import com.vicky7230.todoapp.ui.main.state.MainSideEffect
 import com.vicky7230.todoapp.ui.main.viewmodel.MainViewModel
@@ -37,19 +38,21 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var mainViewModel: MainViewModel
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            Timber.d("Notification permission granted")
-            Toast.makeText(this@MainActivity, "Notification permission granted", Toast.LENGTH_SHORT)
-                .show()
-        } else {
-            Timber.d("Notification permission denied")
-            Toast.makeText(this@MainActivity, "Notification permission denied", Toast.LENGTH_SHORT)
-                .show()
+    private val requestPermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val readContactsGranted = permissions[Manifest.permission.READ_CONTACTS] == true
+            val postNotificationsGranted = permissions[Manifest.permission.POST_NOTIFICATIONS] == true
+
+            if (readContactsGranted && postNotificationsGranted) {
+                Timber.d("Permissions granted")
+                Toast.makeText(this@MainActivity, "Permissions granted", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Timber.d("Permissions denied")
+                Toast.makeText(this@MainActivity, "Permissions denied", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -57,16 +60,8 @@ class MainActivity : ComponentActivity() {
 
         printFcmToken()
 
-        //request notification permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
+        //request permissions
+        requestPermissionsIfNeeded()
 
         //enableEdgeToEdge()
         mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
@@ -79,6 +74,14 @@ class MainActivity : ComponentActivity() {
                     state = state.value,
                     onSearchClick = {
                         startActivity(Intent(this@MainActivity, SearchActivity::class.java))
+                    },
+                    onDataClick = {
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                ContentProviderActivity::class.java
+                            )
+                        )
                     }
                 )
             }
@@ -101,6 +104,31 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+
+    private fun requestPermissionsIfNeeded() {
+        val permissionsToRequest = mutableListOf<String>()
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.READ_CONTACTS)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && // Android 13+
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            requestPermissionsLauncher.launch(permissionsToRequest.toTypedArray())
+        } else {
+            Toast.makeText(this@MainActivity, "Permissions granted", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
 
     private fun printFcmToken() {
         Firebase.messaging.token.addOnCompleteListener { task ->

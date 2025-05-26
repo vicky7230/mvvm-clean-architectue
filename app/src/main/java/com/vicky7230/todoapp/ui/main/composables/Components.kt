@@ -38,7 +38,8 @@ import com.vicky7230.todoapp.ui.theme.TodoAppTheme
 fun AppToolBar(
     modifier: Modifier = Modifier,
     title: String,
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    onDataClick: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -72,6 +73,13 @@ fun AppToolBar(
                     tint = Color.White
                 )
             }
+            IconButton(onClick = onDataClick) {
+                Icon(
+                    imageVector = Icons.Default.Warning,
+                    contentDescription = "Data",
+                    tint = Color.White
+                )
+            }
         }
     )
 }
@@ -80,7 +88,7 @@ fun AppToolBar(
 @Composable
 fun PreviewAppToolBar() {
     TodoAppTheme {
-        AppToolBar(title = "Home", onSearchClick = {})
+        AppToolBar(title = "Home", onSearchClick = {}, onDataClick = {})
     }
 }
 
